@@ -1,20 +1,21 @@
 ## gcp-env-sh
 
-Source variables from a gcp project in your shell
+List runtime config/secrets from a gcp project in your shell.
+
+### Example usage
 
 ```
-% GOOGLE_CLOUD_PROJECT=gcp-env-s1-5b4f source ./gcp-env
-Sourcing environment from project gcp-env-s1-5b4f runtime configuration and secret manager
-📄 rr_gcpenvlib_runtime_config_text=rr_gcpenvlib_runtime_config_text_test
-📄 rr_gcpenvlib_runtime_config_value=rr_gcpenvlib_runtime_config_value_test
-🔒 rr_gcpenvlib_secret_multiple_versions
-🔒 rr_gcpenvlib_secret_single_version
-```
-
-```
-% env | grep rr_gcpenvlib
-rr_gcpenvlib_secret_multiple_versions=rr_gcpenvlib_secret_multiple_versions_v3
-rr_gcpenvlib_secret_single_version=rr_gcpenvlib_secret_single_version_v1
+% ./gcp-env --project gcp-env-s1-5b4f
+Listing environment from project gcp-env-s1-5b4f runtime configuration and secret manager
 rr_gcpenvlib_runtime_config_text=rr_gcpenvlib_runtime_config_text_test
 rr_gcpenvlib_runtime_config_value=rr_gcpenvlib_runtime_config_value_test
+rr_gcpenvlib_secret_multiple_versions
+rr_gcpenvlib_secret_single_version
+```
+
+### Source values
+
+You may also run the following command if you desire to source these values:
+```
+% source ./gcp-env --project gcp-env-s1-5b4f --export
 ```
