@@ -10,7 +10,7 @@ do
         EXPORT=1
         shift
         ;;
-        -p|--project-id)
+        -p|--project)
         GOOGLE_CLOUD_PROJECT="$2"
         shift
         ;;
