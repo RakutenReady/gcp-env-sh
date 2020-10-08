@@ -6,7 +6,7 @@ echo "Sourcing environment from project $GOOGLE_CLOUD_PROJECT runtime configurat
 gcloud beta runtime-config configs list --project=$GOOGLE_CLOUD_PROJECT | tail -n +2 | while read -r config_name ; do
     gcloud beta runtime-config configs variables list --config-name=$config_name --project=$GOOGLE_CLOUD_PROJECT | tail -n +2 | while read -r variable ; do
         key=`echo $variable | cut -d' ' -f1` 
-        value=`gcloud beta runtime-config configs variables get-value $key --config-name=$config_name  --project=gcp-env-s1-5b4f`
+        value=`gcloud beta runtime-config configs variables get-value $key --config-name=$config_name  --project=$GOOGLE_CLOUD_PROJECT`
         echo 📄 $key"="$value
         export $key=$value
     done
