@@ -1,0 +1,22 @@
+#!/bin/bash -ex
+
+echo "Sourcing environment from project $GOOGLE_CLOUD_PROJECT runtime configuration and secret manager"
+
+# Runtime config API has bugs when using --uri so must resort to some pipe cleanup
+gcloud beta runtime-config configs list --project=$GOOGLE_CLOUD_PROJECT | tail -n +2 | while read -r config_name ; do
+    gcloud beta runtime-config configs variables list --config-name=$config_name --project=$GOOGLE_CLOUD_PROJECT | tail -n +2 | while read -r variable ; do
+        key=`echo $variable | cut -d' ' -f1` 
+        value=`gcloud beta runtime-config configs variables get-value $key --config-name=$config_name  --project=gcp-env-s1-5b4f`
+        echo 📄 $key"="$value
+        export $key=$value
+    done
+done
+
+gcloud beta secrets list --project=$GOOGLE_CLOUD_PROJECT --uri | while read -r secret ; do
+    gcloud beta secrets versions list $secret --project=$GOOGLE_CLOUD_PROJECT --uri | head -n1 | while read -r secret_version ; do
+        value=`gcloud beta secrets versions access --project=$GOOGLE_CLOUD_PROJECT $secret_version`
+        key=${secret##*/}
+        echo 🔒 $key
+        export $key=$value
+    done
+done
