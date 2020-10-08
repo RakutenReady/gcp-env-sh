@@ -1,6 +1,22 @@
 #!/bin/bash -ex
 set +x
 
+EXPORT=0
+
+for arg in "$@"
+do
+    case $arg in
+        -e|--export)
+        EXPORT=1
+        shift
+        ;;
+        -p|--project-id)
+        GOOGLE_CLOUD_PROJECT="$2"
+        shift
+        ;;
+    esac
+done
+
 echo "Listing environment from project $GOOGLE_CLOUD_PROJECT runtime configuration and secret manager"
 
 # Runtime config API has bugs when using --uri so must resort to some pipe cleanup
@@ -9,6 +25,10 @@ gcloud beta runtime-config configs list --project=$GOOGLE_CLOUD_PROJECT | tail -
         key=`echo $variable | cut -d' ' -f1` 
         value=`gcloud beta runtime-config configs variables get-value $key --config-name=$config_name  --project=$GOOGLE_CLOUD_PROJECT`
         echo $key"="$value
+        if [ $EXPORT -eq 1 ]
+        then
+            export $key=$value
+        fi
     done
 done
 
@@ -17,5 +37,9 @@ gcloud beta secrets list --project=$GOOGLE_CLOUD_PROJECT --uri | while read -r s
         value=`gcloud beta secrets versions access --project=$GOOGLE_CLOUD_PROJECT $secret_version`
         key=${secret##*/}
         echo $key"="$value
+        if [ $EXPORT -eq 1 ]
+        then
+            export $key=$value
+        fi
     done
 done
