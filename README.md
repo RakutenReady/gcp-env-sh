@@ -2,6 +2,10 @@
 
 List runtime config/secrets from a gcp project in your shell.
 
+### Install with brew
+
+See https://github.com/RakutenReady/homebrew-gcp-env-sh.
+
 ### Example usage
 
 ```
@@ -19,3 +23,8 @@ You may also run the following command if you desire to source these values:
 ```
 % source ./gcp-env --project gcp-env-s1-5b4f --export
 ```
+
+### Release
+
+You may release a new version using `ghr`.
+See https://github.com/tcnksm/ghr for documentation. Releasing a new version is needed to update it in brew.
