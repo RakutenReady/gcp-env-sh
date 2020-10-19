@@ -4,10 +4,10 @@ List runtime config/secrets from a gcp project in your shell.
 
 ### Install with brew
 
-See https://github.com/RakutenReady/homebrew-gcp-env-sh, or use the following command:
+Use the following command:
 
 ```
-brew tap RakutenReady/gcp-env-sh
+brew tap RakutenReady/gcp-env-sh git@github.com:RakutenReady/gcp-env-sh.git
 brew install gcp-env
 ```
 
